@@ -87,7 +87,7 @@ public class UserDao extends CommonDao {
         try {
             this.getConnection();
             ps = db.prepareStatement("SELECT * FROM user WHERE user_id = ?");
-            ps.setString(1, user.getUserId());
+            ps.setString(1, user_id);
             rs = ps.executeQuery();
             while (rs.next()) {
                 String user_name = rs.getString("user_name");
@@ -126,11 +126,11 @@ public class UserDao extends CommonDao {
         return true;
     }
 
-    public boolean deleteOne(User user){
+    public boolean deleteOne(String user_id){
         try {
             this.getConnection();
             ps = db.prepareStatement("DELETE FROM user WHERE user_id = ?");
-            ps.setString(1, user.getUserId());
+            ps.setString(1, user_id);
             int result = ps.executeUpdate();
             if (result != 1) {
                 return false;
