@@ -3,6 +3,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport"
+  content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- Bootstrap CSS -->
+<link rel="stylesheet"
+  href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+  integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
+  crossorigin="anonymous">
 <title>ログイン画面</title>
 </head>
 <body>
@@ -11,7 +18,7 @@
         <br/>
         パスワード：<input type="password" name="password">
         <br/>
-        <input type="submit" value="ログイン">
+        <input type="submit" value="ログイン" class="btn btn-success">
     </form>
 </body>
 </html>

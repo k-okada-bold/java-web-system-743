@@ -24,6 +24,9 @@ public class LoginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         RequestDispatcher dispatch = null;
+
+        request.getSession().invalidate();
+
         dispatch = request.getRequestDispatcher("Login.jsp");
         dispatch.forward(request, response);
     }
@@ -42,7 +45,7 @@ public class LoginServlet extends HttpServlet {
             user = loginDao.findLoginUser(userId, password);
             list = userDao.findAll();
 
-            session.setAttribute("users", list);
+            request.setAttribute("users", list);
 
             RequestDispatcher dispatch = null;
             if (user != null) {

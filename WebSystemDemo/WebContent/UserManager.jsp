@@ -7,15 +7,16 @@
   //セッションスコープからインスタンスを取得![スクリーンショット 2016-02-25 13.43.01.png](https://qiita-image-store.s3.amazonaws.com/0/95187/871a7c0f-3793-0d1b-e24e-4cec9ae4cdf3.png)![スクリーンショット 2016-02-25 13.43.01.png](https://qiita-image-store.s3.amazonaws.com/0/95187/699aaea9-2ada-e7bc-bcd8-11b4c554c334.png)
   User loginuser = (User) session.getAttribute("loginuser");
 
-  List<User> users = (List<User>) session.getAttribute("users");
+  List<User> users = (List<User>) request.getAttribute("users");
 
   User user = (User) request.getAttribute("user");
   String user_id = user == null ? "" : String.valueOf(user.getUserId());
   String user_name = user == null ? "" : String.valueOf(user.getUserName());
   String password = user == null ? "" : String.valueOf(user.getPassword());
+  String passwordMsk = password.replaceAll("[a-z]+", "*");
 
   String title = (String) request.getAttribute("title");
-
+  title = title == null ? "": title;
   String err = (String) request.getAttribute("err");
   String msg = (String) request.getAttribute("msg");
 %>
@@ -56,13 +57,33 @@
     <p><%=title%></p>
     ようこそ！！
     <%=loginuser.getUserName()%>
-    さん <br />
+    さん <br /><br />
 
     <form action="UserServlet" method="POST">
       <div class="form-group">
-        <label for="user_name">名前:</label> <input type="text" id="user_name"
+      <table class="table table-striped mt-4">
+      <tr>
+        <th><label for="user_id">ユーザID:</label></th>
+        <th><label for="user_name">名前:</label></th>
+        <th><label for="name">パスワード:</label></th>
+        <th>処理</th>
+      </tr>
+      <tr>
+      <td><input type="text" id="user_id"
+          name="user_id" class="form-control" style="width: 200px;"
+          value="<%=user_id%>"></td>
+      <td>
+         <input type="text" id="user_name"
           name="user_name" class="form-control" style="width: 200px;"
-          value="<%=user_name%>"> <label for="name">名前:</label>
+          value="<%=user_name%>"></td>
+      <td>
+          <input type="password" id="password"
+          name="password" class="form-control" style="width: 200px;"
+          value="<%=password%>"></td>
+      <td>
+        <button type="submit" class="btn btn-primary"><%=user_id.isEmpty()?"登録":"更新" %></button>
+      </td></tr>
+        </table>
       </div>
     </form>
     <table class="table table-striped mt-4">
@@ -76,11 +97,11 @@
         <tr>
           <td>${u.userId }</td>
           <td>${u.userName}</td>
-          <td>${u.password}</td>
+          <td>${u.password.replaceAll("[ -~]+", "********")}</td>
           <td><a
-            href="/WebSystemDemo/UserServlet?action=update&id=${u.userId }"
+            href="/WebSystemDemo/UserServlet?action=update&user_id=${u.userId }"
             class="btn btn-primary">更新</a> <a
-            href="/WebSystemDemo/UserServlet?action=delete&id=${u.userId }"
+            href="/WebSystemDemo/UserServlet?action=delete&user_id=${u.userId }"
             class="btn btn-danger" onclick="return confirm('削除してよろしいですか？');">削除</a>
           </td>
         </tr>
@@ -88,7 +109,7 @@
     </table>
 
     <form method="GET" action="LoginServlet">
-      <input type="submit" value="ログイン画面へ" style="margin: 5px">
+      <input type="submit" value="ログイン画面へ" class="btn btn-warning">
     </form>
   </div>
 </body>

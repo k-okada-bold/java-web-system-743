@@ -22,7 +22,10 @@ public class UserServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+
         UserDao dao = new UserDao();
+
+
         String action = request.getParameter("action");
         if (action != null && action.equals("delete")) {
             dao.deleteOne(request.getParameter("user_id"));
@@ -33,7 +36,7 @@ public class UserServlet extends HttpServlet {
             request.setAttribute("title", "項目を編集してください。");
         }
         List<User> list = dao.findAll();
-        request.setAttribute("list", list);
+        request.setAttribute("users", list);
 
         RequestDispatcher dispatch = request.getRequestDispatcher("UserManager.jsp");
         dispatch.forward(request, response);
@@ -58,11 +61,18 @@ public class UserServlet extends HttpServlet {
             if (user != null) {
                 dao.updateOne(new User(userId, userName, password));
                 request.setAttribute("msg","1件更新しました。");
+
+                User loginUser = (User) request.getSession().getAttribute("loginuser");
+                if (loginUser.getUserId().equals(userId)) {
+                    loginUser.setUserName(userName);
+                    request.getSession().setAttribute("loginuser", loginUser);
+                }
             } else {
                 dao.insertOne(new User(userId, userName, password));
                 request.setAttribute("msg","1件登録しました。");
             }
         }
+//        request.removeAttribute("list");
 
         doGet(request,response);
     }

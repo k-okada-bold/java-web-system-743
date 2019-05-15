@@ -30,7 +30,7 @@ public class User implements Serializable {
         return this.user_name;
     }
 
-    public void setUserNmae(String user_name) {
+    public void setUserName(String user_name) {
         this.user_name = user_name;
     }
     public String getPassword() {
