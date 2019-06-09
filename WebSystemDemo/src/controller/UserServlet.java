@@ -50,6 +50,8 @@ public class UserServlet extends HttpServlet {
         String userName = request.getParameter("user_name");
         String password = request.getParameter("password");
 
+        String mode = request.getParameter("mode");
+
         if (userName.isEmpty() || userId.isEmpty() || password.isEmpty()) {
             request.setAttribute("err", "未記入の項目があります！");
         } else {
@@ -58,7 +60,16 @@ public class UserServlet extends HttpServlet {
             String updated = sdf.format(date);
             UserDao dao = new UserDao();
             User user = dao.findOne(userId);
-            if (user != null) {
+            if (mode.equals("insert")) {
+                if (user != null) {
+                    request.setAttribute("err", "idが重複しているため、変更してください！");
+                }else {
+                    dao.insertOne(new User(userId, userName, password));
+                    request.setAttribute("msg","1件登録しました。");
+
+                }
+
+            }else {
                 dao.updateOne(new User(userId, userName, password));
                 request.setAttribute("msg","1件更新しました。");
 
@@ -67,10 +78,20 @@ public class UserServlet extends HttpServlet {
                     loginUser.setUserName(userName);
                     request.getSession().setAttribute("loginuser", loginUser);
                 }
-            } else {
-                dao.insertOne(new User(userId, userName, password));
-                request.setAttribute("msg","1件登録しました。");
             }
+//            if (user != null) {
+//                dao.updateOne(new User(userId, userName, password));
+//                request.setAttribute("msg","1件更新しました。");
+//
+//                User loginUser = (User) request.getSession().getAttribute("loginuser");
+//                if (loginUser.getUserId().equals(userId)) {
+//                    loginUser.setUserName(userName);
+//                    request.getSession().setAttribute("loginuser", loginUser);
+//                }
+//            } else {
+//                dao.insertOne(new User(userId, userName, password));
+//                request.setAttribute("msg","1件登録しました。");
+//            }
         }
 //        request.removeAttribute("list");
 

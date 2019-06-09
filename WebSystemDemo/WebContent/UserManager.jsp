@@ -69,9 +69,22 @@
         <th>処理</th>
       </tr>
       <tr>
-      <td><input type="text" id="user_id"
+      <td>
+        <%
+        if (user_id.isEmpty()) {
+      %>
+      <input type="text" id="user_id"
           name="user_id" class="form-control" style="width: 200px;"
-          value="<%=user_id%>"></td>
+          value="<%=user_id%>">
+      <%
+        } else {
+      %>
+      <label for="user_id" class="form-control" style="width: 200px;"><%=user_id%></label>
+      <%
+        }
+      %>
+
+      </td>
       <td>
          <input type="text" id="user_name"
           name="user_name" class="form-control" style="width: 200px;"
@@ -82,6 +95,7 @@
           value="<%=password%>"></td>
       <td>
         <button type="submit" class="btn btn-primary"><%=user_id.isEmpty()?"登録":"更新" %></button>
+        <input type="hidden" name="mode" style="display: none;" value="<%=user_id.isEmpty()?"insert":"update" %>">
       </td></tr>
         </table>
       </div>
@@ -98,12 +112,17 @@
           <td>${u.userId }</td>
           <td>${u.userName}</td>
           <td>${u.password.replaceAll("[ -~]+", "********")}</td>
-          <td><a
+          <td>
+          <c:choose>
+            <c:when test = "${u.userId != loginuser.userId}">
+              <a
             href="/WebSystemDemo/UserServlet?action=update&user_id=${u.userId }"
             class="btn btn-primary">更新</a> <a
             href="/WebSystemDemo/UserServlet?action=delete&user_id=${u.userId }"
             class="btn btn-danger" onclick="return confirm('削除してよろしいですか？');">削除</a>
-          </td>
+            </c:when>
+          </c:choose>
+           </td>
         </tr>
       </c:forEach>
     </table>
