@@ -10,32 +10,7 @@ import model.User;
 
 public class UserDao extends CommonDao {
 
-//    private Connection db;
-//    private PreparedStatement ps;
-//    private ResultSet rs;
-//
-//    private void getConnection() throws NamingException, SQLException {
-//        Context context = new InitialContext();
-//        DataSource ds = (DataSource) context.lookup("java:comp/env/jdbc/jsp");
-//        this.db = ds.getConnection();
-//    }
-//
-//    private void disconnect() {
-//        try {
-//            if (rs != null) {
-//                rs.close();
-//            }
-//            if (ps != null) {
-//                ps.close();
-//            }
-//            if (db != null) {
-//                db.close();
-//            }
-//
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//    }
+
 
     public List<User> findAll() {
         List<User> userList = new ArrayList<>();
